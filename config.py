@@ -10,7 +10,7 @@ class Config:
     SECRET_KEY=os.getenv("SECRET_KEY")
     # === Database ===
     SQLALCHEMY_DATABASE_URI=os.getenv("SQLALCHEMY_DATABASE_URI")
-    SQLALCHEMY_TRACK_MODIFICATIONS=False = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS", 'False') == 'True'
+    SQLALCHEMY_TRACK_MODIFICATIONS = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS", 'False').lower() == 'true'
     # === Mail Configuration ===
 
     MAIL_SERVER = os.getenv("MAIL_SERVER")
@@ -29,10 +29,11 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
-    SQLALCHEMY_DATABASE_URI = os.getenv('DEV_DATABASE_URL') or 'sqlite:///' + 'sqlite://'
+    SQLALCHEMY_DATABASE_URI = os.getenv('TEST_DATABASE_URL') or 'sqlite://'
 
 class ProductionConfig(Config):
-    pass
+    SQLALCHEMY_DATABASE_URI = os.getenv('DATABASE_URL')  
+
 
 config = {
     'development' : DevelopmentConfig,
